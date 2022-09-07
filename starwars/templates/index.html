@@ -1,4 +1,21 @@
+{% extends 'static_block.html' %}
+{% block content %}
 
+{% load static %}
+    
     {% for film in films_list %}
-    <p>{{film.title}}</p>
-    {% endfor %}
+        <div class="col m-3">
+            <div class="card">
+                <a href="#"><img class="card-img-top" src="{% static 'media/placeholder.jpg' %}"></a>
+                <div class="card-body">
+                <h5 class="card-title">{{film.episode_id}} - {{film.title}}</h5>
+                <p class="card-text">{{film.release_date}}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor  %}
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}
