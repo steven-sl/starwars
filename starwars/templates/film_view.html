@@ -1,0 +1,17 @@
+{% extends 'static_block.html' %}
+{% block content %}
+
+{% load static %}
+
+<br>
+
+{% for film in films_list %}
+
+<h1 class="display-3 text-center section-title">{{film.title}} ({{film.release_date}})</h1>
+<!-- <p>{{film.characters}}</p> -->
+<!-- TODO: add year separator -->
+<img src="{% static 'media/placeholder.jpg' %}" class="img-fluid rounded mx-auto d-block" style="width: 500px">
+
+</a>
+{% endfor %}
+{% endblock %}

@@ -9,7 +9,7 @@
     {% for film in films_list %}
         <div class="col m-3">
             <div class="card">
-                <a href="#"><img class="card-img-top" src="{% static 'media/placeholder.jpg' %}"></a>
+                <a href="{% url 'starwars:film_view' film.episode_id %}"><img class="card-img-top" src="{% static 'media/placeholder.jpg' %}"></a>
                 <div class="card-body">
                 <h6 class="card-title">[{{film.episode_id}}] {{film.title}}</h6>
                 </div>
