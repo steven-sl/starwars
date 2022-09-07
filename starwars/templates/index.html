@@ -2,18 +2,21 @@
 {% block content %}
 
 {% load static %}
-    
+<h1 class="display-3 text-center section-title">Films</h1>
+
+<br>
+    <div class="row row-cols-auto row-cols-sm-1 row-cols-md-4 my-2 mx-5 d-flex align-items-center justify-content-center">
     {% for film in films_list %}
         <div class="col m-3">
             <div class="card">
                 <a href="#"><img class="card-img-top" src="{% static 'media/placeholder.jpg' %}"></a>
                 <div class="card-body">
-                <h5 class="card-title">{{film.episode_id}} - {{film.title}}</h5>
-                <p class="card-text">{{film.release_date}}</p>
+                <h5 class="card-title">[{{film.episode_id}}] {{film.title}}</h5>
                 </div>
             </div>
         </div>
     {% endfor  %}
+    </div>
 
 {% endblock %}
 
