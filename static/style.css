@@ -1,0 +1,12 @@
+html, body {
+    background-color: black !important;
+}
+.section-title{
+    color: white
+}
+
+.navbar-custom {
+    /* background-color: rgb(220,61,68) !important; */
+    background-color: black !important;
+    border-bottom: 3px solid rgb(220,61,68);
+}
