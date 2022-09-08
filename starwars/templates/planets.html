@@ -3,13 +3,13 @@
 
 {% load static %}
 
-<h1 class="display-3 text-center section-title">Planets</h1>
+<!-- <h1 class="display-3 text-center section-title">Planets</h1> -->
 <br>
 
     {% for planet in planets_list %}
     <div class="container-fluid px-5 py-2">
         <div class="row planet_desc">
-            <hr>
+            <!-- <hr> -->
           <div class="col-xl-6 col-lg-6 col-md-6 d-flex align-items-center justify-content-center">
             <img src="{% static planet.img_url %}" alt="responsive webite" class="img-fluid " style="width:300px">
           </div>
@@ -26,6 +26,7 @@
             <!-- <p>films  : {{planet.films  }}</p> -->
 
           </div>
+          <hr>
         </div>
       </div>
       {% endfor %}

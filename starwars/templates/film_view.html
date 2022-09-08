@@ -5,13 +5,41 @@
 
 <br>
 
-{% for film in films_list %}
 
-<h1 class="display-3 text-center section-title">{{film.title}} ({{film.release_date}})</h1>
-<!-- <p>{{film.characters}}</p> -->
-<!-- TODO: add year separator -->
-<img src="{% static 'media/placeholder.jpg' %}" class="img-fluid rounded mx-auto d-block" style="width: 500px">
+<!-- <h1 class="display-3 text-center section-title">Film Details</h1> -->
+<div class="container-fluid px-5 py-2">
+    <div class="row planet_desc">
+        <!-- <hr> -->
+      <div class="col-xl-4 col-lg-4 col-md-4 d-flex align-items-center justify-content-center">
+        <img src="{% static film.img_url %}" alt="responsive webite" class="img-fluid " style="width:300px">
+      </div>
+      <div class="col-xl-8 col-lg-8 col-md-8">
+        <h2 class="mt-2">Episode {{film.episode_id}}: {{film.title}}</h2>
+        <p class="my-5"><strong>{{film.opening_crawl}}</strong></p>
+        <p><code>Director:</code> {{film.director}}</p>
+        <p><code>Producer:</code> {{film.producer}}</p>
+        <p><code>Release_date:</code> {{film.release_date}}</p>
 
-</a>
-{% endfor %}
+      </div>
+    </div>
+  </div>
+  <hr style="color: white">
+<p class="display-5 text-center section-title">Characters</p>
+
+
+  <div class="card-group">
+
+  {% for char in film_chars%}
+  <!-- code in CSS later -->
+  <div class="card d-flex align-items-center justify-content-center m-5" style="background-color: black; color: white;">
+    <img src="{% static film.img_url %}" class="card-img-top "style="width:150px">
+    <div class="card-body">
+      <h5 class="card-title">{{char.name}}</h5>
+    </div>
+  </div>
+  {% endfor %}
+  </div>
+
+   
+
 {% endblock %}

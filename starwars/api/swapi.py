@@ -2,6 +2,8 @@ import urllib.request, json
 import os.path
 
 def get_sw_films():
+    print("start")
+
     sw_films = urllib.request.urlopen("https://swapi.dev/api/films")
     # print(films_api)
     sw_films = json.loads(sw_films.read())
@@ -19,11 +21,13 @@ def get_sw_films():
             # link to failover image 
             film['img_url'] = "media/fallback_poster.png"
 
+    print("done")
 
     return sw_films
 
 
 def get_sw_planets():
+    print("test")
     sw_planets = urllib.request.urlopen("https://swapi.dev/api/planets")
     sw_planets = json.loads(sw_planets.read())
     sw_planets = sw_planets['results']
