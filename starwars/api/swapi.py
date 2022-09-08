@@ -21,3 +21,18 @@ def get_sw_films():
 
 
     return sw_films
+
+
+def get_sw_planets():
+    sw_planets = urllib.request.urlopen("https://swapi.dev/api/planets")
+    sw_planets = json.loads(sw_planets.read())
+    sw_planets = sw_planets['results']
+
+    for planets in sw_planets:
+        if os.path.exists("static/media/planets/" + planets['name'] + ".jpg"):
+            # link to downloaded images
+            planets['img_url'] = "media/planets/" + planets['name'] + ".jpg"
+        else:
+            # link to failover image 
+            planets['img_url'] = "media/fallback_poster.png"
+    return sw_planets

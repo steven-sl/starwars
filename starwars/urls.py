@@ -6,4 +6,6 @@ urlpatterns = [
     path('', def_view.index, name="index"),
 
     path('film/<int:episode_id>/', def_view.film_view, name="film_view"),
+    path('planets/', def_view.planets, name="planets"),
+
 ]
