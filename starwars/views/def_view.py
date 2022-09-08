@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from ..api.swapi import get_sw_films, get_sw_planets, get_sw_starships
 import urllib.request, json 
+import os.path
 
 # Create your views here.
 def index(request):
@@ -24,8 +25,17 @@ def film_view(request, episode_id):
         try:
             # PARSE URL
             char = urllib.request.urlopen(film['characters'][i])
-    # print(films_api)
             char = json.loads(char.read())
+            
+            # TOOD: Make a separate function for this:
+            if os.path.exists("static/media/characters/" + char['name'] + ".jpg"):
+            # link to downloaded images
+                char['img_url'] = "media/characters/" + char['name'] + ".jpg"
+            else:
+            # link to failover image 
+                char['img_url'] = "media/fallback_poster.png"
+
+
             film_chars.append(char)
         except:
             break
@@ -37,8 +47,13 @@ def film_view(request, episode_id):
         try: # for failover
             # PARSE URL
             planet = urllib.request.urlopen(film['planets'][i])
-    # print(films_api)
             planet = json.loads(planet.read())
+            if os.path.exists("static/media/planets/" + planet['name'] + ".jpg"):
+            # link to downloaded images
+                planet['img_url'] = "media/planets/" + planet['name'] + ".jpg"
+            else:
+            # link to failover image 
+                planet['img_url'] = "media/fallback_poster.png"
             film_planets.append(planet)
         except:
             break
@@ -49,8 +64,13 @@ def film_view(request, episode_id):
         try: # for failover
             # PARSE URL
             vehicle = urllib.request.urlopen(film['vehicles'][i])
-    # print(films_api)
             vehicle = json.loads(vehicle.read())
+            if os.path.exists("static/media/vehicles/" + vehicle['name'] + ".jpg"):
+            # link to downloaded images
+                vehicle['img_url'] = "media/vehicles/" + vehicle['name'] + ".jpg"
+            else:
+            # link to failover image 
+                vehicle['img_url'] = "media/fallback_poster.png"
             film_vehicles.append(vehicle)
         except:
             break
@@ -64,3 +84,4 @@ def planets(request):
 def starships(request):
     starships_list = get_sw_starships()
     return render(request, 'starships.html', locals())
+
