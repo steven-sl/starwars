@@ -40,6 +40,36 @@
   {% endfor %}
   </div>
 
-   
 
+  <hr style="color: white">
+<p class="display-5 text-center section-title">Planets</p>
+
+<div class="card-group">
+
+  {% for planet in film_planets%}
+  <!-- code in CSS later -->
+  <div class="card d-flex align-items-center justify-content-center m-5" style="background-color: black; color: white;">
+    <img src="{% static film.img_url %}" class="card-img-top "style="width:150px">
+    <div class="card-body">
+      <h5 class="card-title">{{planet.name}}</h5>
+    </div>
+  </div>
+  {% endfor %}
+  </div>
+
+  <hr style="color: white">
+  <p class="display-5 text-center section-title">Vehicles</p>
+
+  <div class="card-group">
+
+    {% for vehicle in film_vehicles%}
+    <!-- code in CSS later -->
+    <div class="card d-flex align-items-center justify-content-center m-5" style="background-color: black; color: white;">
+      <img src="{% static film.img_url %}" class="card-img-top "style="width:150px">
+      <div class="card-body">
+        <h5 class="card-title">{{vehicle.name}}</h5>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
 {% endblock %}

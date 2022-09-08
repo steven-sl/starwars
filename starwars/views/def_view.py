@@ -20,15 +20,40 @@ def film_view(request, episode_id):
     # get max 5 characters in this film
     film_chars = []
     for i in range(5):
-        if(film['characters'][i]):
+        # if(film['characters'][i]): # for failover
+        try:
             # PARSE URL
             char = urllib.request.urlopen(film['characters'][i])
     # print(films_api)
             char = json.loads(char.read())
             film_chars.append(char)
+        except:
+            break
     # print(film['characters'])
 
     # get max 5 planets 
+    film_planets = []
+    for i in range(5):
+        try: # for failover
+            # PARSE URL
+            planet = urllib.request.urlopen(film['planets'][i])
+    # print(films_api)
+            planet = json.loads(planet.read())
+            film_planets.append(planet)
+        except:
+            break
+
+    # get max 5 vehicles 
+    film_vehicles = []
+    for i in range(5):
+        try: # for failover
+            # PARSE URL
+            vehicle = urllib.request.urlopen(film['vehicles'][i])
+    # print(films_api)
+            vehicle = json.loads(vehicle.read())
+            film_vehicles.append(vehicle)
+        except:
+            break
     
     return render(request, 'film_view.html', locals())
 
