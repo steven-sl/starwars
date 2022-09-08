@@ -7,5 +7,7 @@ urlpatterns = [
 
     path('film/<int:episode_id>/', def_view.film_view, name="film_view"),
     path('planets/', def_view.planets, name="planets"),
+    path('starships/', def_view.starships, name="starships"),
+
 
 ]

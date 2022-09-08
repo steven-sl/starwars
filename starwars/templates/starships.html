@@ -1,0 +1,44 @@
+{% extends 'static_block.html' %}
+{% block content %}
+
+{% load static %}
+
+<!-- <h1 class="display-3 text-center section-title">Planets</h1> -->
+<br>
+
+    {% for starship in starships_list %}
+    <div class="container-fluid px-5 py-2">
+        <div class="row planet_desc">
+            <!-- <hr> -->
+          <div class="col-xl-6 col-lg-6 col-md-6 d-flex align-items-center justify-content-center">
+            <img src="{% static starship.img_url %}" alt="responsive webite" class="img-fluid " style="width:300px">
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-6">
+            <h2>{{starship.name}}</h2>
+            <p><code>Model: </code> {{starship.model}}</p>
+            <p><code>Starship Class: </code> {{starship.starship_class}}</p>
+            <p><code>Mmanufacturer: </code> {{starship.manufacturer}}</p>
+            <p><code>Cost: </code> {{starship.cost_in_credits}}</p>
+            <p><code>Length: </code> {{starship.length}}</p>
+            <p><code>Crew: </code> {{starship.crew}}</p>
+            <p><code>Passengers: </code> {{starship.passengers}}</p>
+            <p><code>Max Atmosphering Speed: </code> {{starship.max_atmosphering_speed}}</p>
+            <p><code>Cargo Capacity: </code> {{starship.cargo_capacity}}</p>
+            <p><code>Consumables: </code> {{starship.consumables}}</p>
+
+
+            <!-- <p>residents : {{planet.residents }}</p> -->
+            <!-- <p>films  : {{planet.films  }}</p> -->
+
+          </div>
+          <hr>
+        </div>
+      </div>
+      {% endfor %}
+
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

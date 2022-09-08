@@ -40,3 +40,18 @@ def get_sw_planets():
             # link to failover image 
             planets['img_url'] = "media/fallback_poster.png"
     return sw_planets
+
+def get_sw_starships():
+    print("test")
+    sw_starships = urllib.request.urlopen("https://swapi.dev/api/starships")
+    sw_starships = json.loads(sw_starships.read())
+    sw_starships = sw_starships['results']
+
+    for starship in sw_starships:
+        if os.path.exists("static/media/starship/" + starship['name'] + ".jpg"):
+            # link to downloaded images
+            starship['img_url'] = "media/starship/" + starship['name'] + ".jpg"
+        else:
+            # link to failover image 
+            starship['img_url'] = "media/fallback_poster.png"
+    return sw_starships

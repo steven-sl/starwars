@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from ..api.swapi import get_sw_films, get_sw_planets
+from ..api.swapi import get_sw_films, get_sw_planets, get_sw_starships
 import urllib.request, json 
 
 # Create your views here.
@@ -60,3 +60,7 @@ def film_view(request, episode_id):
 def planets(request):
     planets_list = get_sw_planets()
     return render(request, 'planets.html', locals())
+
+def starships(request):
+    starships_list = get_sw_starships()
+    return render(request, 'starships.html', locals())
