@@ -8,6 +8,13 @@ def index(request):
     # print("Test1")
     films_list = get_sw_films()
     # print(films_list)
+    if (request.GET):
+        keyword = request.GET.get('keyword')
+        if not keyword.isspace():
+            films_list = film_search(keyword)
+        else:
+            keyword = '' #removing spaces in the search bar
+
     return render(request, 'index.html', locals())
 
 def film_view(request, episode_id):
@@ -75,6 +82,9 @@ def film_view(request, episode_id):
         except:
             break
     
+
+
+
     return render(request, 'film_view.html', locals())
 
 def planets(request):
@@ -85,3 +95,10 @@ def starships(request):
     starships_list = get_sw_starships()
     return render(request, 'starships.html', locals())
 
+def film_search(keyword):
+    sw_films = get_sw_films()
+    print(keyword)
+    sw_films = [x for x in sw_films if keyword.lower() in x['title'].lower()]
+    # print(sw_films)
+
+    return sw_films
