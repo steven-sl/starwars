@@ -10,3 +10,7 @@ html, body {
     background-color: black !important;
     border-bottom: 3px solid rgb(220,61,68);
 }
+
+.planet_desc{
+    color: white;
+}
