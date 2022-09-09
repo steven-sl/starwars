@@ -14,3 +14,7 @@ html, body {
 .planet_desc{
     color: white;
 }
+
+.clickable-cards:hover{
+    opacity: 0.5;
+}

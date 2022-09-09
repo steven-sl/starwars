@@ -31,8 +31,10 @@
 
   {% for char in film_chars%}
   <!-- code in CSS later -->
-  <div class="card d-flex align-items-center justify-content-center m-5" style="background-color: black; color: white;">
-    <img src="{% static char.img_url %}" class="card-img-top "style="width:150px">
+  <div class="clickable-cards card d-flex align-items-center justify-content-center m-5" style="background-color: black; color: white;">
+    <!-- <img src="{% static char.img_url %}" class="card-img-top "style="width:150px"> -->
+    <a href="{% url 'starwars:char_detail' char.char_id %}"><img class="card-img-top img-responsive" src="{% static char.img_url %}" style="width: 150px"></a>
+
     <div class="card-body">
       <h5 class="card-title">{{char.name}}</h5>
     </div>

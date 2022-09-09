@@ -32,6 +32,15 @@ def film_view(request, episode_id):
         try:
             # PARSE URL
             char = urllib.request.urlopen(film['characters'][i])
+            # Get character's unique ID
+            # ex) https://swapi.dev/api/people/1
+            # Will need to get 1 at the end
+
+            char_url = film['characters'][i].split('/')
+            char_url = [split for split in char_url if split]
+            char_id = char_url[-1] #the last number is the ID
+            # print(char_url)
+
             char = json.loads(char.read())
             
             # TOOD: Make a separate function for this:
@@ -41,6 +50,9 @@ def film_view(request, episode_id):
             else:
             # link to failover image 
                 char['img_url'] = "media/fallback_poster.png"
+            
+            char['char_id'] = char_id
+            char['char_url'] = film['characters'][i]
 
 
             film_chars.append(char)
@@ -102,3 +114,27 @@ def film_search(keyword):
     # print(sw_films)
 
     return sw_films
+
+def char_detail(request, char_id):
+    url = 'https://swapi.dev/api/people/' + char_id
+
+    char = urllib.request.urlopen(url)
+    char = json.loads(char.read())
+
+    char_films = []
+    for i in range(5):
+        try: # for failover
+            # PARSE URL
+            film = urllib.request.urlopen(char['films'][i])
+            film = json.loads(film.read())
+            if os.path.exists("static/media/films/" + film['title'] + ".jpg"):
+            # link to downloaded images
+                film['img_url'] = "media/films/" + film['title'] + ".jpg"
+            else:
+            # link to failover image 
+                film['img_url'] = "media/fallback_poster.png"
+            char_films.append(film)
+        except:
+            break
+
+    return render(request, 'char_view.html', locals())

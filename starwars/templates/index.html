@@ -12,7 +12,7 @@
 
         <input type="text" class="form-control rounded keyword" type="submit" name="keyword" value="{{keyword}}">
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary btn_search" type="button">Search</button>
+            <button class="btn btn-outline-danger btn_search" type="button">Search</button>
         </div>
     </form>
 </div>
@@ -21,7 +21,7 @@
     <div class="card-group row row-cols-auto align-items-stretch row-cols-sm-1 row-cols-md-4 my-2 mx-5 d-flex align-items-center justify-content-center">
     {% for film in films_list %}
         <div class="col m-3 ">
-            <div class="card h-100 d-flex align-items-center justify-content-center" style="background-color: black; color: white;">
+            <div class="clickable-cards card h-100 d-flex align-items-center justify-content-center" style="background-color: black; color: white;">
                 <a href="{% url 'starwars:film_view' film.episode_id %}"><img class="card-img-top img-responsive" src="{% static film.img_url %}" style="width: 300px"></a>
                 <div class="card-body">
                 <h6 class="card-title ">E{{film.episode_id}} - {{film.title}}</h6>
