@@ -52,7 +52,7 @@ def film_view(request, episode_id):
                 char['img_url'] = "media/fallback_poster.png"
             
             char['char_id'] = char_id
-            char['char_url'] = film['characters'][i]
+            # char['char_url'] = film['characters'][i]
 
 
             film_chars.append(char)
@@ -120,12 +120,25 @@ def char_detail(request, char_id):
 
     char = urllib.request.urlopen(url)
     char = json.loads(char.read())
+    
+    if os.path.exists("static/media/characters/" + char['name'] + ".jpg"):
+    # link to downloaded images
+        char['img_url'] = "media/characters/" + char['name'] + ".jpg"
+    else:
+    # link to failover image 
+        char['img_url'] = "media/fallback_poster.png"
+
 
     char_films = []
     for i in range(5):
         try: # for failover
             # PARSE URL
             film = urllib.request.urlopen(char['films'][i])
+
+            film_url = char['films'][i].split('/')
+            film_url = [split for split in film_url if split]
+            film_id = film_url[-1] #the last number is the ID
+
             film = json.loads(film.read())
             if os.path.exists("static/media/films/" + film['title'] + ".jpg"):
             # link to downloaded images
@@ -133,6 +146,9 @@ def char_detail(request, char_id):
             else:
             # link to failover image 
                 film['img_url'] = "media/fallback_poster.png"
+
+            film['film_id'] = film_id
+
             char_films.append(film)
         except:
             break
