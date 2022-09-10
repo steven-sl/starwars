@@ -5,9 +5,9 @@ import os.path
 
 # Create your views here.
 def index(request):
-    # print("Test1")
     films_list = get_sw_films()
-    # print(films_list)
+
+    # SEARCH 
     if (request.GET):
         keyword = request.GET.get('keyword')
         if not keyword.isspace():
@@ -17,29 +17,25 @@ def index(request):
 
     return render(request, 'index.html', locals())
 
+# Detail film views
 def film_view(request, episode_id):
     film = get_sw_films()
     film = [x for x in film if x['episode_id'] == episode_id]
     film = film[0]
 
-
-    
-
     # get max 5 characters in this film
     film_chars = []
     for i in range(5):
-        # if(film['characters'][i]): # for failover
+        # for failover
         try:
             # PARSE URL
             char = urllib.request.urlopen(film['characters'][i])
             # Get character's unique ID
-            # ex) https://swapi.dev/api/people/1
-            # Will need to get 1 at the end
+            # ex) Need to get '1' from https://swapi.dev/api/people/1
 
             char_url = film['characters'][i].split('/')
             char_url = [split for split in char_url if split]
-            char_id = char_url[-1] #the last number is the ID
-            # print(char_url)
+            char_id = char_url[-1]
 
             char = json.loads(char.read())
             

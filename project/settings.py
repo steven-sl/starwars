@@ -67,6 +67,15 @@ TEMPLATES = [
     },
 ]
 
+# Added for API cache
+# Ran python manage.py createcachetable
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'swapi_cache',
+    }
+}
+
 WSGI_APPLICATION = 'project.wsgi.application'
 
 
