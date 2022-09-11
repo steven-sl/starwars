@@ -7,9 +7,7 @@
 <br>
 
 <div class="container ">
-
     <form class="input-group" id="search" method="get" action="{% url 'index' %}">
-
         <input type="text" class="form-control rounded keyword" type="submit" name="keyword" value="{{keyword}}">
         <div class="input-group-append">
             <button class="btn btn-outline-danger btn_search" type="button">Search</button>
@@ -17,31 +15,32 @@
     </form>
 </div>
 
-
-    <div class="card-group row row-cols-auto align-items-stretch row-cols-sm-1 row-cols-md-4 my-2 mx-5 d-flex align-items-center justify-content-center">
+<div class="card-group row row-cols-auto align-items-stretch row-cols-sm-1 row-cols-md-4 my-2 mx-5 d-flex align-items-center justify-content-center">
     {% for film in films_list %}
-        <div class="col m-3 ">
-            <div class="clickable-cards card h-100 d-flex align-items-center justify-content-center" style="background-color: black; color: white;">
-                <a href="{% url 'starwars:film_view' film.unique_id %}"><img class="card-img-top img-responsive" src="{% static film.img_url %}" style="width: 300px"></a>
-                <div class="card-body">
+    <div class="col m-3 ">
+        <div class="clickable-cards card h-100 d-flex align-items-center justify-content-center"
+            style="background-color: black; color: white;">
+            <a href="{% url 'starwars:film_view' film.unique_id %}"><img class="card-img-top img-responsive"
+                    src="{% static film.img_url %}" style="width: 300px"></a>
+            <div class="card-body">
                 <h6 class="card-title ">E{{film.episode_id}} - {{film.title}}</h6>
-                </div>
             </div>
         </div>
-    {% endfor  %}
     </div>
+    {% endfor %}
+</div>
 
 {% endblock %}
 
 {% block script %}
 <script type='text/javascript'>
 
-    $(document).ready(function(){
+    $(document).ready(function () {
         console.log("???");
-        $(".btn_search").on('click', function(){
+        $(".btn_search").on('click', function () {
             $("#search").submit();
         });
     });
-    
-    </script>
+
+</script>
 {% endblock %}

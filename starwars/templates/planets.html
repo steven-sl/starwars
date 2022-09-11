@@ -3,34 +3,30 @@
 
 {% load static %}
 
-<!-- <h1 class="display-3 text-center section-title">Planets</h1> -->
 <br>
 
-    {% for planet in planets_list %}
-    <div class="container-fluid px-5 py-2">
-        <div class="row planet_desc">
-            <!-- <hr> -->
-          <div class="col-xl-6 col-lg-6 col-md-6 d-flex align-items-center justify-content-center">
-            <img src="{% static planet.img_url %}" alt="responsive webite" class="img-fluid " style="width:300px">
-          </div>
-          <div class="col-xl-6 col-lg-6 col-md-6">
-            <h2>{{planet.name}}</h2>
-            <p><code>Diameter:</code> {{planet.diameter}}</p>
-            <p><code>Period:</code> {{planet.rotation_period}}</p>
-            <p><code>Orbital Period:</code> {{planet.orbital_period }}</p>
-            <p><code>Gravity:</code> {{planet.gravity }}</p>
-            <p><code>Population:</code> {{planet.population }}</p>
-            <p><code>Climate:</code> {{planet.climate }}</p>
-            <p><code>Terrain:</code> {{planet.terrain }}</p>
-            <!-- <p>residents : {{planet.residents }}</p> -->
-            <!-- <p>films  : {{planet.films  }}</p> -->
+{% for planet in planets_list %}
+<div class="container-fluid px-5 py-2">
+  <div class="row planet_desc">
+    <!-- <hr> -->
+    <div class="col-xl-6 col-lg-6 col-md-6 d-flex align-items-center justify-content-center">
+      <img src="{% static planet.img_url %}" alt="responsive webite" class="img-fluid " style="width:300px">
+    </div>
+    <div class="col-xl-6 col-lg-6 col-md-6">
+      <h2>{{planet.name}}</h2>
+      <p><code>Diameter:</code> {{planet.diameter}}km</p>
+      <p><code>Rotation Period:</code> {{planet.rotation_period}}</p>
+      <p><code>Orbital Period:</code> {{planet.orbital_period }}</p>
+      <p><code>Gravity:</code> {{planet.gravity }}</p>
+      <p><code>Population:</code> {{planet.population }}</p>
+      <p><code>Climate:</code> {{planet.climate }}</p>
+      <p><code>Terrain:</code> {{planet.terrain }}</p>
+    </div>
+    <hr>
+  </div>
+</div>
 
-          </div>
-          <hr>
-        </div>
-      </div>
-      {% endfor %}
-
+{% endfor %}
 
 {% endblock %}
 

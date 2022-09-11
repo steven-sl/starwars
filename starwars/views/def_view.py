@@ -30,7 +30,7 @@ def film_view(request, unique_id):
     id = str(unique_id)
     if cache.get(id + "_FILM_CACHE") and cache.get(id + "_FILM_CHARS_CACHE") and \
     cache.get(id + "_FILM_PLANETS_CACHE") and cache.get(id + "_FILM_VEHICLES_CACHE"):
-        print("Getting data from DB")
+        # print("Getting data from DB")
 
         film = cache.get(id + "_FILM_CACHE")
         film_chars = cache.get(id + "_FILM_CHARS_CACHE")
@@ -38,7 +38,7 @@ def film_view(request, unique_id):
         film_vehicles = cache.get(id + "_FILM_VEHICLES_CACHE")
     
     else:
-        print("Getting new data")
+        # print("Getting new data")
         film = get_sw_films()
         film = [x for x in film if x['unique_id'] == str(unique_id)][0]
         # print(film)
@@ -106,9 +106,7 @@ def film_view(request, unique_id):
 
 def film_search(keyword):
     sw_films = get_sw_films()
-    print(keyword)
     sw_films = [x for x in sw_films if keyword.lower() in x['title'].lower()]
-    # print(sw_films)
 
     return sw_films
 
@@ -124,13 +122,12 @@ def char_detail(request, char_id):
     # cache.clear()
     id = str(char_id)
     if cache.get(id + "_CHAR_CACHE") and cache.get(id + "_CHAR_FILMS_CACHE"):
-        print("Getting data from DB")
+        # print("Getting data from DB")
         char = cache.get(id + "_CHAR_CACHE")
         char_films = cache.get(id + "_CHAR_FILMS_CACHE")
 
     else:
-        print("Getting new data")
-
+        # print("Getting new data")
         url = 'https://swapi.dev/api/people/' + char_id
 
         char = urllib.request.urlopen(url)

@@ -4,52 +4,46 @@
 {% load static %}
 
 <br>
-
-
-<!-- <h1 class="display-3 text-center section-title">Film Details</h1> -->
 <div class="container-fluid px-5 py-2">
-    <div class="row planet_desc">
-        <!-- <hr> -->
-      <div class="col-xl-4 col-lg-4 col-md-4 d-flex align-items-center justify-content-center">
-        <img src="{% static film.img_url %}" alt="responsive webite" class="img-fluid " style="width:300px">
-      </div>
-      <div class="col-xl-8 col-lg-8 col-md-8">
-        <h2 class="mt-2">Episode {{film.episode_id}}: {{film.title}}</h2>
-        <p class="my-5"><strong>{{film.opening_crawl}}</strong></p>
-        <p><code>Director:</code> {{film.director}}</p>
-        <p><code>Producer:</code> {{film.producer}}</p>
-        <p><code>Release_date:</code> {{film.release_date}}</p>
-
-      </div>
+  <div class="row planet_desc">
+    <!-- <hr> -->
+    <div class="col-xl-4 col-lg-4 col-md-4 d-flex align-items-center justify-content-center">
+      <img src="{% static film.img_url %}" alt="responsive webite" class="img-fluid " style="width:300px">
+    </div>
+    <div class="col-xl-8 col-lg-8 col-md-8">
+      <h2 class="mt-2">Episode {{film.episode_id}}: {{film.title}}</h2>
+      <p class="my-5"><strong>{{film.opening_crawl}}</strong></p>
+      <p><code>Director:</code> {{film.director}}</p>
+      <p><code>Producer:</code> {{film.producer}}</p>
+      <p><code>Release_date:</code> {{film.release_date}}</p>
     </div>
   </div>
-  <hr style="color: white">
+</div>
+
+
+<hr style="color: white">
 <p class="display-5 text-center section-title">Characters</p>
 
-
-  <div class="card-group">
-
+<div class="card-group">
   {% for char in film_chars%}
   <!-- code in CSS later -->
-  <div class="clickable-cards card d-flex align-items-center justify-content-center m-5" style="background-color: black; color: white;">
+  <div class="clickable-cards card d-flex align-items-center justify-content-center m-5"
+    style="background-color: black; color: white;">
     <!-- <img src="{% static char.img_url %}" class="card-img-top "style="width:150px"> -->
-    <a href="{% url 'starwars:char_detail' char.char_id %}"><img class="card-img-top img-fluid" src="{% static char.img_url %}" style="width:auto;height:150px" ></a>
-
+    <a href="{% url 'starwars:char_detail' char.char_id %}"><img class="card-img-top img-fluid"
+        src="{% static char.img_url %}" style="width:auto;height:150px"></a>
     <div class="card-body">
       <h5 class="card-title">{{char.name}}</h5>
     </div>
   </div>
   {% endfor %}
-  </div>
+</div>
 
-
-  <hr style="color: white">
+<hr style="color: white">
 <p class="display-5 text-center section-title">Planets</p>
 
 <div class="card-group">
-
   {% for planet in film_planets%}
-  <!-- code in CSS later -->
   <div class="card d-flex align-items-center justify-content-center m-5" style="background-color: black; color: white;">
     <img src="{% static planet.img_url %}" class="card-img-top img-fluid" style="width:auto;height:150px">
     <div class="card-body">
@@ -57,21 +51,21 @@
     </div>
   </div>
   {% endfor %}
+</div>
+
+
+<hr style="color: white">
+<p class="display-5 text-center section-title">Vehicles</p>
+
+<div class="card-group">
+  {% for vehicle in film_vehicles%}
+  <!-- code in CSS later -->
+  <div class="card d-flex align-items-center justify-content-center m-5" style="background-color: black; color: white;">
+    <img src="{% static vehicle.img_url %}" class="card-img-top img-fluid" style="width:auto;height:150px">
+    <div class="card-body">
+      <h5 class="card-title">{{vehicle.name}}</h5>
+    </div>
   </div>
-
-  <hr style="color: white">
-  <p class="display-5 text-center section-title">Vehicles</p>
-
-  <div class="card-group">
-
-    {% for vehicle in film_vehicles%}
-    <!-- code in CSS later -->
-    <div class="card d-flex align-items-center justify-content-center m-5" style="background-color: black; color: white;">
-      <img src="{% static vehicle.img_url %}" class="card-img-top img-fluid" style="width:auto;height:150px">
-      <div class="card-body">
-        <h5 class="card-title">{{vehicle.name}}</h5>
-      </div>
-    </div>
-    {% endfor %}
-    </div>
+  {% endfor %}
+</div>
 {% endblock %}

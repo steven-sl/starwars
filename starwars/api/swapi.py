@@ -20,11 +20,11 @@ def get_sw_films():
     dates = "FILMS_CACHE" # If I don't want new fetch
 
     if cache.get(dates):
-        print("getting api from DB")
+        # print("getting api from DB")
         sw_films = cache.get(dates)
 
     else:
-        print("calling api")
+        # print("calling api")
 
         sw_films = urllib.request.urlopen("https://swapi.dev/api/films")
         sw_films = json.loads(sw_films.read())
@@ -54,11 +54,11 @@ def get_sw_planets():
     dates = "PLANETS_CACHE" # If I don't want new fetch
 
     if cache.get(dates):
-        print("getting api from DB")
+        # print("getting api from DB")
         sw_planets = cache.get(dates)
 
     else:
-        print("calling api")
+        # print("calling api")
 
         sw_planets = urllib.request.urlopen("https://swapi.dev/api/planets")
         sw_planets = json.loads(sw_planets.read())
@@ -77,11 +77,11 @@ def get_sw_starships():
     dates = "STARSHIPS_CACHE" # If I don't want new fetch
 
     if cache.get(dates):
-        print("getting api from DB")
+        # print("getting api from DB")
         sw_starships = cache.get(dates)
 
     else:
-        print("calling api")    
+        # print("calling api")    
         sw_starships = urllib.request.urlopen("https://swapi.dev/api/starships")
         sw_starships = json.loads(sw_starships.read())
         sw_starships = sw_starships['results']

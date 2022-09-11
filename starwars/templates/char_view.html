@@ -4,47 +4,42 @@
 {% load static %}
 
 <br>
-
-
-<!-- <h1 class="display-3 text-center section-title">Film Details</h1> -->
 <div class="container-fluid px-5 py-2">
-    <div class="row planet_desc">
-        <!-- <hr> -->
-      <div class="col-xl-4 col-lg-4 col-md-4 d-flex align-items-center justify-content-center">
-        <img src="{% static char.img_url %}" alt="image" class="img-fluid " style="width:300px">
-      </div>
-      <div class="col-xl-8 col-lg-8 col-md-8">
-        <h2 class="mt-2">{{char.name}}</h2>
-        <p><code>Birth Year: </code> {{char.birth_year }}</p>
-        <p><code>Gender: </code> {{char.gender }}</p>
-        <p><code>Height: </code> {{char.height }}cm</p>
-        <p><code>Skin Color : </code> {{char.skin_color }}</p>
-        <p><code>Eye Color  : </code> {{char.eye_color  }}</p>
-        <p><code>Mass : </code> {{char.mass }}kg</p>
-
-
-
-      </div>
+  <div class="row planet_desc">
+    <!-- <hr> -->
+    <div class="col-xl-4 col-lg-4 col-md-4 d-flex align-items-center justify-content-center">
+      <img src="{% static char.img_url %}" alt="image" class="img-fluid " style="width:300px">
+    </div>
+    <div class="col-xl-8 col-lg-8 col-md-8">
+      <h2 class="mt-2">{{char.name}}</h2>
+      <p><code>Birth Year: </code> {{char.birth_year }}</p>
+      <p><code>Gender: </code> {{char.gender }}</p>
+      <p><code>Height: </code> {{char.height }}cm</p>
+      <p><code>Skin Color : </code> {{char.skin_color }}</p>
+      <p><code>Eye Color  : </code> {{char.eye_color }}</p>
+      <p><code>Mass : </code> {{char.mass }}kg</p>
     </div>
   </div>
-  <hr style="color: white">
+</div>
+
+<hr style="color: white">
 <p class="display-6 text-center section-title">Also in these films:</p>
 
-
-  <div class="card-group">
+<div class="card-group">
 
   {% for film in char_films %}
   <!-- code in CSS later -->
-  <div class="card d-flex align-items-center justify-content-center m-5 " style="background-color: black; color: white;">
-    <a href="{% url 'starwars:film_view' film.film_id %}"><img class="card-img-top img-responsive clickable-cards" src="{% static film.img_url %}" style="width: 150px"></a>
+  <div class="card d-flex align-items-center justify-content-center m-5 "
+    style="background-color: black; color: white;">
+    <a href="{% url 'starwars:film_view' film.film_id %}"><img class="card-img-top img-responsive clickable-cards"
+        src="{% static film.img_url %}" style="width: 150px"></a>
 
     <div class="card-body">
       <h5 class="card-title">{{film.title}}</h5>
     </div>
   </div>
   {% endfor %}
-  </div>
+</div>
 
 
-  
 {% endblock %}

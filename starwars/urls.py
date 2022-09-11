@@ -7,7 +7,6 @@ urlpatterns = [
 
     path('film/<int:unique_id>/', def_view.film_view, name="film_view"),
     
-    # path('character/<int:character_id>/', def_view.char_detail, name="char_detail"),
     path('character/<str:char_id>/', def_view.char_detail, name="char_detail"),
 
     path('planets/', planets_view.planets, name="planets"),
