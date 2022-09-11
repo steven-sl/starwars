@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from ..api.swapi import get_sw_films, get_sw_planets, get_sw_starships, link_images
+from ..api.swapi import get_sw_films, link_images
 import urllib.request, json 
 import os.path
 from django.core.cache import cache
@@ -25,9 +25,9 @@ def index(request):
 
 
 # Detail film views
-def film_view(request, episode_id):
+def film_view(request, unique_id):
     # IF CACHED
-    id = str(episode_id)
+    id = str(unique_id)
     if cache.get(id + "_FILM_CACHE") and cache.get(id + "_FILM_CHARS_CACHE") and \
     cache.get(id + "_FILM_PLANETS_CACHE") and cache.get(id + "_FILM_VEHICLES_CACHE"):
         print("Getting data from DB")
@@ -40,34 +40,30 @@ def film_view(request, episode_id):
     else:
         print("Getting new data")
         film = get_sw_films()
-        film = [x for x in film if x['episode_id'] == episode_id]
-        film = film[0]
+        film = [x for x in film if x['unique_id'] == str(unique_id)][0]
+        # print(film)
 
 
         # get max 5 characters in this film
         film_chars = []
         for i in range(5):
-            # for failover
-            try:
+            try: #to prevent out of index
+
                 # PARSE URL
                 char = urllib.request.urlopen(film['characters'][i])
                 char = json.loads(char.read())
 
                 # Link images
                 char = link_images([char], "characters", "name")[0]
-                # char = char[0]
 
                 # Get character's unique ID
-                # ex) Need to get '1' from https://swapi.dev/api/people/1
-                char_url = film['characters'][i].split('/')
-                char_url = [split for split in char_url if split]
-                char_id = char_url[-1]
-                char['char_id'] = char_id
+                char['char_id'] = get_id(film['characters'][i]) 
 
                 film_chars.append(char)
 
             except: #exceeds 5
                 break
+
 
         # get max 5 planets 
         film_planets = []
@@ -107,13 +103,6 @@ def film_view(request, episode_id):
     # end of if 
     return render(request, 'film_view.html', locals())
 
-def planets(request):
-    planets_list = get_sw_planets()
-    return render(request, 'planets.html', locals())
-
-def starships(request):
-    starships_list = get_sw_starships()
-    return render(request, 'starships.html', locals())
 
 def film_search(keyword):
     sw_films = get_sw_films()
@@ -123,7 +112,16 @@ def film_search(keyword):
 
     return sw_films
 
+
+def get_id(url):
+    # ex) Need to get '1' from https://swapi.dev/api/people/1
+    url = url.split('/')
+    url = [split for split in url if split]
+    return url[-1]
+
+
 def char_detail(request, char_id):
+    # cache.clear()
     id = str(char_id)
     if cache.get(id + "_CHAR_CACHE") and cache.get(id + "_CHAR_FILMS_CACHE"):
         print("Getting data from DB")
@@ -142,18 +140,17 @@ def char_detail(request, char_id):
 
         char_films = []
         for i in range(5):
-            try: # for failover
+            try: #to prevent out of index
                 # PARSE URL
                 film = urllib.request.urlopen(char['films'][i])
-
-                film_url = char['films'][i].split('/')
-                film_url = [split for split in film_url if split]
-                film_id = film_url[-1] #the last number is the ID
-
                 film = json.loads(film.read())
-                film['film_id'] = film_id
 
+                # Link images
                 film = link_images([film], "films", "title")[0]
+
+                # Get character's unique ID
+                film['film_id'] = get_id(char['films'][i]) 
+
                 char_films.append(film)
 
             except:

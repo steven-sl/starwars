@@ -22,7 +22,7 @@
     {% for film in films_list %}
         <div class="col m-3 ">
             <div class="clickable-cards card h-100 d-flex align-items-center justify-content-center" style="background-color: black; color: white;">
-                <a href="{% url 'starwars:film_view' film.episode_id %}"><img class="card-img-top img-responsive" src="{% static film.img_url %}" style="width: 300px"></a>
+                <a href="{% url 'starwars:film_view' film.unique_id %}"><img class="card-img-top img-responsive" src="{% static film.img_url %}" style="width: 300px"></a>
                 <div class="card-body">
                 <h6 class="card-title ">E{{film.episode_id}} - {{film.title}}</h6>
                 </div>

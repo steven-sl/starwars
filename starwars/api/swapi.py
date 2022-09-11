@@ -34,6 +34,14 @@ def get_sw_films():
         # Add images
         link_images(sw_films, "films", "title")
 
+        # Add unique ID
+        for film in sw_films:
+            film_url = film['url'].split('/')
+            film_url = [split for split in film_url if split]
+            film_url = film_url[-1]
+            # print("ADDED", film_url)
+            film['unique_id'] = film_url
+
         # Save to DB, does not expire 
         cache.set(dates, sw_films, None)
 
