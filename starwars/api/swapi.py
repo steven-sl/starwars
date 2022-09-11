@@ -3,15 +3,28 @@ import os.path
 from django.core.cache import cache
 from datetime import date
 
+def link_images(list_, type_, keyword):
+    for item in list_:
+        if os.path.exists("static/media/" + type_ + "/" + item[keyword] + ".jpg"):
+            # link to downloaded images
+            item['img_url'] = "media/" + type_ + "/" + item[keyword] + ".jpg"
+        else:
+            # link to failover image 
+            item['img_url'] = "media/fallback_poster.png"
+    return list_
+
+
 def get_sw_films():
-    dates = "FILMS-" +  str(date.today())
-    # print(cache.get(dates))
+
+    # dates = "FILMS-" +  str(date.today())
+    dates = "FILMS_CACHE" # If I don't want new fetch
+
     if cache.get(dates):
         print("getting api from DB")
         sw_films = cache.get(dates)
 
     else:
-        print("calling api for the day")
+        print("calling api")
 
         sw_films = urllib.request.urlopen("https://swapi.dev/api/films")
         sw_films = json.loads(sw_films.read())
@@ -19,14 +32,8 @@ def get_sw_films():
         sw_films.sort(key = lambda sw_films: sw_films['episode_id'], reverse = False)
 
         # Add images
-        for film in sw_films:
-            if os.path.exists("static/media/films/" + film['title'] + ".jpg"):
-                # link to downloaded images
-                film['img_url'] = "media/films/" + film['title'] + ".jpg"
-            else:
-                # link to failover image 
-                film['img_url'] = "media/fallback_poster.png"
-        
+        link_images(sw_films, "films", "title")
+
         # Save to DB, does not expire 
         cache.set(dates, sw_films, None)
 
@@ -34,50 +41,44 @@ def get_sw_films():
 
 
 def get_sw_planets():
-    dates = "PLANETS-" +  str(date.today())
+    
+    # dates = "PLANETS-" +  str(date.today())
+    dates = "PLANETS_CACHE" # If I don't want new fetch
+
     if cache.get(dates):
         print("getting api from DB")
         sw_planets = cache.get(dates)
 
     else:
-        print("calling api for the day")
+        print("calling api")
 
         sw_planets = urllib.request.urlopen("https://swapi.dev/api/planets")
         sw_planets = json.loads(sw_planets.read())
         sw_planets = sw_planets['results']
 
         # Add images
-        for planets in sw_planets:
-            if os.path.exists("static/media/planets/" + planets['name'] + ".jpg"):
-                # link to downloaded images
-                planets['img_url'] = "media/planets/" + planets['name'] + ".jpg"
-            else:
-                # link to failover image 
-                planets['img_url'] = "media/fallback_poster.png"
+        link_images(sw_planets, "planets", "name")
 
+       
         cache.set(dates, sw_planets, None)
         
-        return sw_planets
+    return sw_planets
 
 def get_sw_starships():
-    dates = "STARSHIPS-" +  str(date.today())
+    # dates = "STARSHIPS-" +  str(date.today()) # Fetch only once a day
+    dates = "STARSHIPS_CACHE" # If I don't want new fetch
+
     if cache.get(dates):
         print("getting api from DB")
         sw_starships = cache.get(dates)
 
     else:
-        print("calling api for the day")    
+        print("calling api")    
         sw_starships = urllib.request.urlopen("https://swapi.dev/api/starships")
         sw_starships = json.loads(sw_starships.read())
         sw_starships = sw_starships['results']
 
-        for starship in sw_starships:
-            if os.path.exists("static/media/starship/" + starship['name'] + ".jpg"):
-                # link to downloaded images
-                starship['img_url'] = "media/starship/" + starship['name'] + ".jpg"
-            else:
-                # link to failover image 
-                starship['img_url'] = "media/fallback_poster.png"
+        link_images(sw_starships, "starships", "name")
 
         cache.set(dates, sw_starships, None)
 

@@ -1,10 +1,16 @@
 from django.shortcuts import render
-from ..api.swapi import get_sw_films, get_sw_planets, get_sw_starships
+from ..api.swapi import get_sw_films, get_sw_planets, get_sw_starships, link_images
 import urllib.request, json 
 import os.path
+from django.core.cache import cache
 
-# Create your views here.
+
+def clearcache(request):
+    cache.clear()
+    return index(request)
+
 def index(request):
+    # cache.clear() 
     films_list = get_sw_films()
 
     # SEARCH 
@@ -17,82 +23,88 @@ def index(request):
 
     return render(request, 'index.html', locals())
 
+
 # Detail film views
 def film_view(request, episode_id):
-    film = get_sw_films()
-    film = [x for x in film if x['episode_id'] == episode_id]
-    film = film[0]
+    # IF CACHED
+    id = str(episode_id)
+    if cache.get(id + "_FILM_CACHE") and cache.get(id + "_FILM_CHARS_CACHE") and \
+    cache.get(id + "_FILM_PLANETS_CACHE") and cache.get(id + "_FILM_VEHICLES_CACHE"):
+        print("Getting data from DB")
 
-    # get max 5 characters in this film
-    film_chars = []
-    for i in range(5):
-        # for failover
-        try:
-            # PARSE URL
-            char = urllib.request.urlopen(film['characters'][i])
-            # Get character's unique ID
-            # ex) Need to get '1' from https://swapi.dev/api/people/1
-
-            char_url = film['characters'][i].split('/')
-            char_url = [split for split in char_url if split]
-            char_id = char_url[-1]
-
-            char = json.loads(char.read())
-            
-            # TOOD: Make a separate function for this:
-            if os.path.exists("static/media/characters/" + char['name'] + ".jpg"):
-            # link to downloaded images
-                char['img_url'] = "media/characters/" + char['name'] + ".jpg"
-            else:
-            # link to failover image 
-                char['img_url'] = "media/fallback_poster.png"
-            
-            char['char_id'] = char_id
-            # char['char_url'] = film['characters'][i]
-
-
-            film_chars.append(char)
-        except:
-            break
-    # print(film['characters'])
-
-    # get max 5 planets 
-    film_planets = []
-    for i in range(5):
-        try: # for failover
-            # PARSE URL
-            planet = urllib.request.urlopen(film['planets'][i])
-            planet = json.loads(planet.read())
-            if os.path.exists("static/media/planets/" + planet['name'] + ".jpg"):
-            # link to downloaded images
-                planet['img_url'] = "media/planets/" + planet['name'] + ".jpg"
-            else:
-            # link to failover image 
-                planet['img_url'] = "media/fallback_poster.png"
-            film_planets.append(planet)
-        except:
-            break
-
-    # get max 5 vehicles 
-    film_vehicles = []
-    for i in range(5):
-        try: # for failover
-            # PARSE URL
-            vehicle = urllib.request.urlopen(film['vehicles'][i])
-            vehicle = json.loads(vehicle.read())
-            if os.path.exists("static/media/vehicles/" + vehicle['name'] + ".jpg"):
-            # link to downloaded images
-                vehicle['img_url'] = "media/vehicles/" + vehicle['name'] + ".jpg"
-            else:
-            # link to failover image 
-                vehicle['img_url'] = "media/fallback_poster.png"
-            film_vehicles.append(vehicle)
-        except:
-            break
+        film = cache.get(id + "_FILM_CACHE")
+        film_chars = cache.get(id + "_FILM_CHARS_CACHE")
+        film_planets = cache.get(id + "_FILM_PLANETS_CACHE")
+        film_vehicles = cache.get(id + "_FILM_VEHICLES_CACHE")
     
+    else:
+        print("Getting new data")
+        film = get_sw_films()
+        film = [x for x in film if x['episode_id'] == episode_id]
+        film = film[0]
 
 
+        # get max 5 characters in this film
+        film_chars = []
+        for i in range(5):
+            # for failover
+            try:
+                # PARSE URL
+                char = urllib.request.urlopen(film['characters'][i])
+                char = json.loads(char.read())
 
+                # Link images
+                char = link_images([char], "characters", "name")[0]
+                # char = char[0]
+
+                # Get character's unique ID
+                # ex) Need to get '1' from https://swapi.dev/api/people/1
+                char_url = film['characters'][i].split('/')
+                char_url = [split for split in char_url if split]
+                char_id = char_url[-1]
+                char['char_id'] = char_id
+
+                film_chars.append(char)
+
+            except: #exceeds 5
+                break
+
+        # get max 5 planets 
+        film_planets = []
+        for i in range(5):
+            try: # for failover
+                # PARSE URL
+                planet = urllib.request.urlopen(film['planets'][i])
+                planet = json.loads(planet.read())
+                planet = link_images([planet], "planets", "name")[0]
+
+                film_planets.append(planet)
+
+            except:
+                break
+
+        # get max 5 vehicles 
+        film_vehicles = []
+        for i in range(5):
+            try: # for failover
+                # PARSE URL
+                vehicle = urllib.request.urlopen(film['vehicles'][i])
+                vehicle = json.loads(vehicle.read())
+                vehicle = link_images([vehicle], "vehicle", "name")[0]
+                
+                film_vehicles.append(vehicle)
+
+            except:
+                break
+
+
+        # Add date in the cache name if I want daily fetch
+        cache.set(id + "_FILM_CACHE", film, None)
+        cache.set(id + "_FILM_CHARS_CACHE", film_chars, None)
+        cache.set(id + "_FILM_PLANETS_CACHE", film_planets, None)
+        cache.set(id + "_FILM_VEHICLES_CACHE", film_vehicles,None)
+
+    # end of if 
     return render(request, 'film_view.html', locals())
 
 def planets(request):
@@ -112,41 +124,43 @@ def film_search(keyword):
     return sw_films
 
 def char_detail(request, char_id):
-    url = 'https://swapi.dev/api/people/' + char_id
+    id = str(char_id)
+    if cache.get(id + "_CHAR_CACHE") and cache.get(id + "_CHAR_FILMS_CACHE"):
+        print("Getting data from DB")
+        char = cache.get(id + "_CHAR_CACHE")
+        char_films = cache.get(id + "_CHAR_FILMS_CACHE")
 
-    char = urllib.request.urlopen(url)
-    char = json.loads(char.read())
-    
-    if os.path.exists("static/media/characters/" + char['name'] + ".jpg"):
-    # link to downloaded images
-        char['img_url'] = "media/characters/" + char['name'] + ".jpg"
     else:
-    # link to failover image 
-        char['img_url'] = "media/fallback_poster.png"
+        print("Getting new data")
 
+        url = 'https://swapi.dev/api/people/' + char_id
 
-    char_films = []
-    for i in range(5):
-        try: # for failover
-            # PARSE URL
-            film = urllib.request.urlopen(char['films'][i])
+        char = urllib.request.urlopen(url)
+        char = json.loads(char.read())
+        char = link_images([char], "characters", "name")[0]
+        
 
-            film_url = char['films'][i].split('/')
-            film_url = [split for split in film_url if split]
-            film_id = film_url[-1] #the last number is the ID
+        char_films = []
+        for i in range(5):
+            try: # for failover
+                # PARSE URL
+                film = urllib.request.urlopen(char['films'][i])
 
-            film = json.loads(film.read())
-            if os.path.exists("static/media/films/" + film['title'] + ".jpg"):
-            # link to downloaded images
-                film['img_url'] = "media/films/" + film['title'] + ".jpg"
-            else:
-            # link to failover image 
-                film['img_url'] = "media/fallback_poster.png"
+                film_url = char['films'][i].split('/')
+                film_url = [split for split in film_url if split]
+                film_id = film_url[-1] #the last number is the ID
 
-            film['film_id'] = film_id
+                film = json.loads(film.read())
+                film['film_id'] = film_id
 
-            char_films.append(film)
-        except:
-            break
+                film = link_images([film], "films", "title")[0]
+                char_films.append(film)
+
+            except:
+                break
+        
+        cache.set(id + "_CHAR_CACHE", char, None)
+        cache.set(id + "_CHAR_FILMS_CACHE", char_films, None)
+
 
     return render(request, 'char_view.html', locals())
