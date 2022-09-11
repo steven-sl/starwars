@@ -86,7 +86,7 @@ def film_view(request, unique_id):
                 # PARSE URL
                 vehicle = urllib.request.urlopen(film['vehicles'][i])
                 vehicle = json.loads(vehicle.read())
-                vehicle = link_images([vehicle], "vehicle", "name")[0]
+                vehicle = link_images([vehicle], "vehicles", "name")[0]
                 
                 film_vehicles.append(vehicle)
 
