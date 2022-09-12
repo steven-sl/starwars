@@ -26,3 +26,8 @@ python manage.py runserver
     - Saves to db.sqlite3, set as never-expire since Swapi is no longer updating
     - Manual navigation to http://127.0.0.1:8000/clearcache/ to clear cache and fetch new api response again
 - Responsiveness (Bootstrap)
+
+![c1](https://user-images.githubusercontent.com/46691433/189576765-44b30baf-e354-42dd-b2f7-f7799c316b2e.png)
+![c2](https://user-images.githubusercontent.com/46691433/189576764-fb8ca08c-b9a0-4b36-bfc5-afc206d6962d.png)
+![c3](https://user-images.githubusercontent.com/46691433/189576761-7b992336-9637-440c-8b33-c94bb5151532.png)
+![c4](https://user-images.githubusercontent.com/46691433/189576766-241d78e9-7a97-4f3d-b647-78b4681f93a3.png)
